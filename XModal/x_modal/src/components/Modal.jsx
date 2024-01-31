@@ -31,6 +31,13 @@ export default function Modal() {
 
   const handleCloseForm = () => {
     setIsOpen(false);
+    // Reset form data on modal close
+    setFormData({
+      username: "",
+      email: "",
+      phone: "",
+      dob: "",
+    });
   };
 
   const handleSubmit = () => {
@@ -45,12 +52,12 @@ export default function Modal() {
     }
 
     if (!formData.email.includes("@")) {
-      alert("Invalid email");
+      alert("Invalid email. Please check your email address.");
       return;
     }
 
     if (!/^\d{10}$/.test(formData.phone)) {
-      alert("Invalid phone number");
+      alert("Invalid phone number. Please enter a 10-digit phone number.");
       return;
     }
 
@@ -58,17 +65,12 @@ export default function Modal() {
     const enteredDate = new Date(formData.dob);
 
     if (enteredDate > currentDate) {
-      alert("Invalid date of birth");
+      alert("Invalid date of birth. Date of birth cannot be in the future.");
       return;
     }
 
-    // If all validations pass, reset the form data
-    setFormData({
-      username: "",
-      email: "",
-      phone: "",
-      dob: "",
-    });
+    // If all validations pass, close the form and reset the form data
+    handleCloseForm();
   };
 
   const handleInputChange = (e) => {
@@ -80,16 +82,14 @@ export default function Modal() {
   };
 
   return (
-    <div className="modal-body">
+    <div className="App">
       <button onClick={handleOpenForm}>Open Form</button>
 
       {isOpen && (
         <div className="modal" ref={modalRef}>
           <div className="modal-content">
             <h2>Form Modal</h2>
-            <label htmlFor="username">
-              <strong>Username:</strong>
-            </label>
+            <label htmlFor="username">Username:</label>
             <input
               type="text"
               id="username"
@@ -97,9 +97,7 @@ export default function Modal() {
               onChange={handleInputChange}
             />
 
-            <label htmlFor="email">
-              <strong>Email:</strong>
-            </label>
+            <label htmlFor="email">Email:</label>
             <input
               type="text"
               id="email"
@@ -107,9 +105,7 @@ export default function Modal() {
               onChange={handleInputChange}
             />
 
-            <label htmlFor="phone">
-              <strong>Phone:</strong>
-            </label>
+            <label htmlFor="phone">Phone:</label>
             <input
               type="text"
               id="phone"
@@ -117,9 +113,7 @@ export default function Modal() {
               onChange={handleInputChange}
             />
 
-            <label htmlFor="dob">
-              <strong>Date of Birth:</strong>
-            </label>
+            <label htmlFor="dob">Date of Birth:</label>
             <input
               type="date"
               id="dob"
@@ -131,9 +125,6 @@ export default function Modal() {
               Submit
             </button>
           </div>
-          {/* <button className="close-button" onClick={handleCloseForm}>
-            Close
-          </button> */}
         </div>
       )}
     </div>
