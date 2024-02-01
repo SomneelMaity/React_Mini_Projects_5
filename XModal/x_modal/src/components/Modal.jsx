@@ -112,7 +112,7 @@ const Modal = () => {
                 />
               </label>
               <br />
-              <button className="submit-button" onClick={handleSubmit}>
+              <button type="submit" className="submit-button" onSubmit={handleSubmit}>
                 Submit
               </button>
             </form>
