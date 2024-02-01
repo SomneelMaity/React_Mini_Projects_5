@@ -82,7 +82,7 @@ const Modal = () => {
                 Email:
                 <input
                   id="email"
-                  type="text"
+                  type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -92,7 +92,7 @@ const Modal = () => {
                 Phone:
                 <input
                   id="phone"
-                  type="text"
+                  type="number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                 />
