@@ -3,130 +3,115 @@ import "./Modal.css";
 
 const Modal = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    phone: "",
-    dob: "",
-  });
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [dob, setDob] = useState("");
 
-  const modalRef = useRef();
+  const modalRef = useRef(null);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (modalRef.current && !modalRef.current.contains(e.target)) {
-        handleCloseForm();
+    const handleOutsideClick = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setIsOpen(false);
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleOutsideClick);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
 
-  const handleOpenForm = () => {
+  const openModal = () => {
     setIsOpen(true);
   };
 
-  const handleCloseForm = () => {
-    setIsOpen(false);
-    // Reset form data on modal close
-    setFormData({
-      username: "",
-      email: "",
-      phone: "",
-      dob: "",
-    });
-  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-  const handleSubmit = () => {
-    let alertMessage = "";
-
-    if (
-      !formData.username ||
-      !formData.email ||
-      !formData.phone ||
-      !formData.dob
-    ) {
-      alertMessage = "Please fill out all fields.";
-    } else {
-      if (!formData.email.includes("@")) {
-        alertMessage = "Invalid email. Please check your email address.";
-      } else if (!/^\d{10}$/.test(formData.phone)) {
-        alertMessage =
-          "Invalid phone number. Please enter a 10-digit phone number.";
-      } else {
-        const currentDate = new Date();
-        const enteredDate = new Date(formData.dob);
-
-        if (enteredDate > currentDate) {
-          alertMessage =
-            "Invalid date of birth. Date of birth cannot be in the future.";
-        }
-      }
+    // Data validation
+    if (!username || !email || !phone || !dob) {
+      alert("Please fill out all fields");
+      return;
     }
 
-    if (alertMessage) {
-      alert(alertMessage);
-    } else {
-      // If all validations pass, close the form and reset the form data
-      handleCloseForm();
+    if (!email.includes("@")) {
+      alert(
+        `Please include an '@' in the email address. '${email}' is missing an '@'.`
+      );
+      return;
     }
-  };
 
-  const handleInputChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
+    if (phone.length !== 10 || isNaN(phone)) {
+      alert("Invalid phone number. Please enter a 10-digit phone number.");
+      return;
+    }
+
+    const currentDate = new Date();
+    const inputDate = new Date(dob);
+
+    if (inputDate > currentDate) {
+      alert("Invalid Date of birth. Date of birth cannot be in the future.");
+      return;
+    }
+
+    // Submission logic
+    alert("Form submitted successfully!");
   };
 
   return (
-    <div className="App">
-      <button onClick={handleOpenForm}>Open Form</button>
-
+    <div>
+      <button onClick={openModal}>Open Form</button>
       {isOpen && (
-        <div className="modal" ref={modalRef}>
-          <div className="modal-content">
-            <h2>Fill Details</h2>
-            <label htmlFor="username">Username:</label>
-            <input
-              type="text"
-              id="username"
-              value={formData.username}
-              onChange={handleInputChange}
-            />
-
-            <label htmlFor="email">Email Address:</label>
-            <input
-              type="text"
-              id="email"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
-
-            <label htmlFor="phone">Phone Number:</label>
-            <input
-              type="text"
-              id="phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-            />
-
-            <label htmlFor="dob">Date of Birth:</label>
-            <input
-              type="date"
-              id="dob"
-              value={formData.dob}
-              onChange={handleInputChange}
-            />
-
-            <button className="submit-button" onClick={handleSubmit}>
-              Submit
-            </button>
+        <div className="modal">
+          <div className="modal-content" ref={modalRef}>
+            <form>
+              <label>
+                Username:
+                <input
+                  id="username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </label>
+              <br />
+              <label>
+                Email:
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </label>
+              <br />
+              <label>
+                Phone:
+                <input
+                  id="phone"
+                  type="number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </label>
+              <br />
+              <label>
+                Date of Birth:
+                <input
+                  id="dob"
+                  type="date"
+                  value={dob}
+                  onChange={(e) => setDob(e.target.value)}
+                />
+              </label>
+              <br />
+              <button className="submit-button" onClick={handleSubmit}>
+                Submit
+              </button>
+            </form>
           </div>
         </div>
       )}
