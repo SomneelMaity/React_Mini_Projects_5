@@ -31,11 +31,11 @@ const Modal = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Data validation
-    if (!username || !email || !phone || !dob) {
-      alert("Please fill out all fields");
-      return;
-    }
+    // // Data validation
+    // if (!username || !email || !phone || !dob) {
+    //   alert("Please fill out all fields");
+    //   return;
+    // }
 
     if (!email.includes("@")) {
       alert(
@@ -75,26 +75,29 @@ const Modal = () => {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  required
                 />
               </label>
               <br />
               <label>
-                Email:
+                Email Address:
                 <input
                   id="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </label>
               <br />
               <label>
-                Phone:
+                Phone Number:
                 <input
                   id="phone"
-                  type="number"
+                  type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
+                  required
                 />
               </label>
               <br />
@@ -105,6 +108,7 @@ const Modal = () => {
                   type="date"
                   value={dob}
                   onChange={(e) => setDob(e.target.value)}
+                  required
                 />
               </label>
               <br />
